@@ -1,14 +1,14 @@
 package com.nuongntk.qluv;
 
-public abstract class Candidate {
+public abstract class Candidate implements Comparable<Candidate> {
 	private String candidateID;
 	private String fullName;
 	private String birthDay;
 	private String phone;
 	private String email;
 	private int candidate_type;
-	private static int canidate_count  = 0;
-	
+	private static int canidate_count = 0;
+
 	public String getCandidateID() {
 		return candidateID;
 	}
@@ -81,7 +81,7 @@ public abstract class Candidate {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public void showInfo() {
 		System.out.println("candidateID: " + candidateID);
 		System.out.println("fullName: " + fullName);
@@ -90,5 +90,28 @@ public abstract class Candidate {
 		System.out.println("email: " + email);
 		System.out.println("candidate_type: " + candidate_type);
 	}
-	public abstract void showMe ();
+
+	public abstract void showMe();
+
+	@Override
+	public int compareTo(Candidate arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Candidate) {
+			return this.candidateID.equals(((Candidate) obj).candidateID);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.candidateID.hashCode();
+	}
+	
+	
+
 }

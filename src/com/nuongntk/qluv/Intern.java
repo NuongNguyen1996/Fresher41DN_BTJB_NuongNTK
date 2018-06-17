@@ -51,4 +51,10 @@ public class Intern extends Candidate {
 		System.out.println("=====================");
 	}
 
+	@Override
+	public int compareTo(Candidate obj) {
+		String fullName = ((Intern) obj).getFullName();
+		return (this.getFullName().compareTo(fullName));
+	}
+
 }

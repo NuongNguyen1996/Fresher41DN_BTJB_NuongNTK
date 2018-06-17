@@ -11,6 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CandidateDAO {
 	private ConnectDB objConnect = new ConnectDB();
@@ -41,6 +45,11 @@ public class CandidateDAO {
 		return false;
 	}
 
+	/**
+	 * get add fullname
+	 * 
+	 * @return sbf
+	 */
 	public String getAllFullName() {
 		StringBuffer sbf = new StringBuffer("");
 		String s = "";
@@ -48,7 +57,7 @@ public class CandidateDAO {
 		try {
 			stmt = objConnect.getconnect().createStatement();
 			rs = stmt.executeQuery(sql);
-			
+
 			while (rs.next()) {
 				s = rs.getString("fullname");
 				sbf.append(s + ", ");
@@ -57,5 +66,143 @@ public class CandidateDAO {
 			e.printStackTrace();
 		}
 		return sbf.toString();
+	}
+
+	public Set<Candidate> getListCandidate() {
+		Set<Candidate> lc = new HashSet<>();
+		Candidate candidate;
+
+		String candidateID;
+		String fullName;
+		String birthDay;
+		String phone;
+		String email;
+		int candidate_type;
+		int expInYear;
+		String proSkill;
+		String graduationDate;
+		String graduationRank;
+		String education;
+		String majors;
+		int semester;
+		String universityName;
+
+		String sql = "select * from candidate";
+		try {
+			stmt = objConnect.getconnect().createStatement();
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				candidateID = rs.getString("candidateID");
+				fullName = rs.getString("fullName");
+				birthDay = rs.getString("birthDay");
+				phone = rs.getString("phone");
+				email = rs.getString("email");
+				candidate_type = rs.getInt("CandidateTypeID");
+
+				switch (candidate_type) {
+				case 1: {
+					expInYear = rs.getInt("expInYear");
+					proSkill = rs.getString("proSkill");
+					candidate = new Experience(candidateID, fullName, birthDay, phone, email, candidate_type, expInYear,
+							proSkill);
+					lc.add(candidate);
+				}
+					break;
+				case 2: {
+					graduationDate = rs.getString("graduationDate");
+					graduationRank = rs.getString("graduationRank");
+					education = rs.getString("education");
+					candidate = new Fresher(candidateID, fullName, birthDay, phone, email, candidate_type,
+							graduationDate, graduationRank, education);
+					lc.add(candidate);
+				}
+					break;
+				case 3: {
+					majors = rs.getString("majors");
+					semester = rs.getInt("semester");
+					universityName = rs.getString("universityName");
+					candidate = new Intern(candidateID, fullName, birthDay, phone, email, candidate_type, majors,
+							semester, universityName);
+					lc.add(candidate);
+				}
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return lc;
+	}
+	
+	public List<Candidate> getListCandidate1() {
+		List<Candidate> lc = new ArrayList<>();
+		Candidate candidate;
+
+		String candidateID;
+		String fullName;
+		String birthDay;
+		String phone;
+		String email;
+		int candidate_type;
+		int expInYear;
+		String proSkill;
+		String graduationDate;
+		String graduationRank;
+		String education;
+		String majors;
+		int semester;
+		String universityName;
+
+		String sql = "select * from candidate";
+		try {
+			stmt = objConnect.getconnect().createStatement();
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				candidateID = rs.getString("candidateID");
+				fullName = rs.getString("fullName");
+				birthDay = rs.getString("birthDay");
+				phone = rs.getString("phone");
+				email = rs.getString("email");
+				candidate_type = rs.getInt("CandidateTypeID");
+
+				switch (candidate_type) {
+				case 1: {
+					expInYear = rs.getInt("expInYear");
+					proSkill = rs.getString("proSkill");
+					candidate = new Experience(candidateID, fullName, birthDay, phone, email, candidate_type, expInYear,
+							proSkill);
+					lc.add(candidate);
+				}
+					break;
+				case 2: {
+					graduationDate = rs.getString("graduationDate");
+					graduationRank = rs.getString("graduationRank");
+					education = rs.getString("education");
+					candidate = new Fresher(candidateID, fullName, birthDay, phone, email, candidate_type,
+							graduationDate, graduationRank, education);
+					lc.add(candidate);
+				}
+					break;
+				case 3: {
+					majors = rs.getString("majors");
+					semester = rs.getInt("semester");
+					universityName = rs.getString("universityName");
+					candidate = new Intern(candidateID, fullName, birthDay, phone, email, candidate_type, majors,
+							semester, universityName);
+					lc.add(candidate);
+				}
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return lc;
 	}
 }

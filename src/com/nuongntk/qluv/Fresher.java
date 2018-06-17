@@ -50,4 +50,10 @@ private String education;
 		System.out.println("education: " + education);
 		System.out.println("=====================");
 	}
+
+	@Override
+	public int compareTo(Candidate obj) {
+		String fullName = ((Fresher) obj).getFullName();
+		return (this.getFullName().compareTo(fullName));
+	}
 }

@@ -1,10 +1,10 @@
 package com.nuongntk.qluv;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
+import java.util.Set;
 
 public class Process {
 
@@ -15,9 +15,10 @@ public class Process {
 		Validation validate = new Validation();
 		CandidateDAO candidateDAO = new CandidateDAO();
 
-		ArrayList<Candidate> listCandidate = new ArrayList<>();
+		List<Candidate> listCandidate = new ArrayList<>();
 		int choose, n;
 		Scanner input = new Scanner(System.in);
+		boolean dk = true;
 		do {
 			System.out.print("choose enter");
 			choose = Integer.parseInt(input.nextLine());
@@ -152,13 +153,14 @@ public class Process {
 			}
 			case 2: {
 				for (Candidate objCan : listCandidate) {
-					if (objCan instanceof Experience) {
-						((Experience) objCan).showMe();
-					} else if (objCan instanceof Fresher) {
-						((Fresher) objCan).showMe();
-					} else if (objCan instanceof Intern) {
-						((Intern) objCan).showMe();
-					}
+					// if (objCan instanceof Experience) {
+					// ((Experience) objCan).showMe();
+					// } else if (objCan instanceof Fresher) {
+					// ((Fresher) objCan).showMe();
+					// } else if (objCan instanceof Intern) {
+					// ((Intern) objCan).showMe();
+					// }
+					objCan.showMe();
 				}
 				break;
 			}
@@ -171,10 +173,41 @@ public class Process {
 				System.out.println("Ten cua cac ung vien la: " + candidateDAO.getAllFullName());
 				break;
 			}
-			default:
+			case 5: {
+				//
+				Set<Candidate> lc = candidateDAO.getListCandidate();
+				Candidate candidate = new Experience("uv001", "", "", "", "", 1, 2, "");
+				lc.add(candidate);
+
+				// loai bo cac gia tri trung nhau
+				for (Candidate listItem : lc) {
+					// listItem.showMe();
+					System.out.println(listItem.getCandidateID());
+				}
+
 				break;
 			}
-		} while (true);
+
+			case 6: {
+				/**
+				 * work: sắp xếp candidate get ds candidate sx theo candidate_type và năm sinh
+				 */
+				List<Candidate> ls = candidateDAO.getListCandidate1();
+				Collections.sort(ls, new CandidateComparator());
+
+				System.out.println("After sort");
+				//
+				for (Candidate listItem : ls) {
+					listItem.showMe();
+				}
+			}
+				break;
+			default: {
+				System.out.println("Stop here");
+				dk = false;
+			}
+			}
+		} while (dk);
 
 	}
 
